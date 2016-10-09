@@ -14,11 +14,11 @@ const MODULES_PATH = './modules/';
 const MODULE_INIT = 'init.js';
 
 let MODULES = {};
-let ROUTER = express.Router();
+// let ROUTER = express.Router();
 let app = express();
 
-ROUTER.use(bodyParser.urlencoded({extended: true}));
-ROUTER.use(methodOverride(function(req){
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride(function(req){
     if (req.body && typeof req.body === "object" && '_crud' in req.body) {
         let method = req.body._crud;
         delete req.body._crud;

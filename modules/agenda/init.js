@@ -65,6 +65,7 @@ function updateEntry(req, res) {
     });
 
 }
+
 function deleteEntry(req, res) {
     entrySchema.model.findById(req.id, (err, entry) => {
         entry.remove((err, oldEntry) => {
@@ -75,24 +76,25 @@ function deleteEntry(req, res) {
 }
 
 function newEntry(req, res) {
+    console.log(req.body);
     let fullName = req.body.fullName || false;
     let address = req.body.address || false;
     let phoneNumber = req.body.phoneNumber || false;
     let birthDay = req.body.age || new Date();
 
+    if (!phoneNumber || !fullName) {
+        res.send(JSON.stringify({error: "phoneNumber and fullName must not be empty"}));
+        return;
+    }
+
     let newEntry = new entrySchema.model({fullName, phoneNumber, address, birthDay});
     newEntry.save(err => {
         if (!err) res.send(JSON.stringify({success: 'new entry created'}));
         else throwThis(err, 204, res);
-    })
+    });
 }
 
 function sanifyId(req, res, next, id) {
-    if (typeof id !== "number" || !parseInt(id, 10)) {
-        throwThis('ID should be a number, just in case', 204);
-        return;
-    }
-
     entrySchema.model.findById(id, (err, entry) => {
         if (err) {
             throwThis('No such ID', 204, res);
