@@ -76,7 +76,6 @@ function deleteEntry(req, res) {
 }
 
 function newEntry(req, res) {
-    console.log(req.body);
     let fullName = req.body.fullName || false;
     let address = req.body.address || false;
     let phoneNumber = req.body.phoneNumber || false;
